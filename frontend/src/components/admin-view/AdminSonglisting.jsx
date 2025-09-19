@@ -12,20 +12,32 @@ const AdminSongsList = () => {
   const [album, setAlbum] = useState('');
   const [imageUrl, setImageUrl] = useState('');
   const [audioUrl, setAudioUrl] = useState('');
+  const [selectedFile, setSelectedFile] = useState(null);
 
   useEffect(() => {
     dispatch(fetchSongs());
   }, [dispatch]);
 
+  // Handle file input change and create local preview URL
+  const handleFileChange = (e) => {
+    if (e.target.files.length > 0) {
+      const file = e.target.files[0];
+      setSelectedFile(file);
+      setAudioUrl(URL.createObjectURL(file)); // local preview URL
+    }
+  };
+
   const handleAddSong = (e) => {
     e.preventDefault();
     const newSong = { title, artist, album, imageUrl, audioUrl };
     dispatch(addSong(newSong));
+    // Reset form
     setTitle('');
     setArtist('');
     setAlbum('');
     setImageUrl('');
     setAudioUrl('');
+    setSelectedFile(null);
     setShowForm(false);
   };
 
@@ -87,12 +99,22 @@ const AdminSongsList = () => {
               onChange={(e) => setImageUrl(e.target.value)}
               placeholder="Image URL"
             />
+            
+            <label className="block text-white mb-1">Upload Audio File (MP3)</label>
             <input
-              className="w-full p-2 rounded bg-gray-700 mb-3"
-              value={audioUrl}
-              onChange={(e) => setAudioUrl(e.target.value)}
-              placeholder="Audio URL"
+              type="file"
+              accept="audio/*"
+              onChange={handleFileChange}
+              className="w-full mb-3 text-white"
             />
+            {selectedFile && (
+              <p className="text-sm mb-3 text-gray-300">Selected file: {selectedFile.name}</p>
+            )}
+
+            {audioUrl && (
+              <audio controls src={audioUrl} className="w-full mb-3" />
+            )}
+
             <button
               type="submit"
               className="bg-blue-800 hover:bg-blue-700 px-4 py-2 rounded w-full"
