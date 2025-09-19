@@ -13,7 +13,7 @@ export const registerUser = createAsyncThunk(
   "auth/register",
   async (formData) => {
     const response = await axios.post(
-      "http://localhost:5000/api/auth/register", // ✅ correct endpoint
+      "https://music-platform-5vyg.onrender.com/api/auth/register", // ✅ correct endpoint
       formData,
       {
         withCredentials: true,
@@ -28,7 +28,7 @@ export const loginUser = createAsyncThunk(
   "auth/login",
   async (formData) => {
     const response = await axios.post(
-      "http://localhost:5000/api/auth/login", // ✅ correct endpoint
+      "https://music-platform-5vyg.onrender.com/api/auth/login", // ✅ correct endpoint
       formData,
       {
         withCredentials: true,
@@ -42,7 +42,7 @@ export const logoutUser = createAsyncThunk(
   "auth/logout",
   async () => {
     const response = await axios.post(
-      "http://localhost:5000/api/auth/logout", // ✅ correct endpoint spelling
+      "https://music-platform-5vyg.onrender.com/api/auth/logout", // ✅ correct endpoint spelling
       {}, // No body needed, so pass empty object
       { withCredentials: true } // Pass as a config object
     );
@@ -54,7 +54,7 @@ export const checkAuth = createAsyncThunk(
   "auth/checkauth",
   async () => {
     const response = await axios.get(
-      "http://localhost:5000/api/auth/check-auth", // ✅ correct endpoint
+      "https://music-platform-5vyg.onrender.com/api/auth/check-auth", // ✅ correct endpoint
       {
         withCredentials : true,
         headers : {

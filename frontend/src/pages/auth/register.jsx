@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Form from '../../components/common/form';
+import  Form  from '../../components/common/Form';
 import { Link, useNavigate } from 'react-router-dom';
 import { registerUser } from '../../app/authSlice';
 import { useDispatch } from 'react-redux';

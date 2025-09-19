@@ -3,20 +3,20 @@ import axios from 'axios';
 
 // Async thunk to fetch all songs
 export const fetchSongs = createAsyncThunk('songs/fetchSongs', async () => {
-  const response = await axios.get('http://localhost:5000/api/songs');
+  const response = await axios.get('https://music-platform-5vyg.onrender.com/api/songs');
   // Assuming response.data might have songs inside a 'songs' property; adjust as needed
   return Array.isArray(response.data) ? response.data : response.data.songs || [];
 });
 
 // Async thunk to add a new song
 export const addSong = createAsyncThunk('songs/addSong', async (songData) => {
-  const response = await axios.post('http://localhost:5000/api/songs', songData);
+  const response = await axios.post('https://music-platform-5vyg.onrender.com/api/songs', songData);
   return response.data;
 });
 
 // Async thunk to delete a song by ID
 export const deleteSong = createAsyncThunk('songs/deleteSong', async (songId) => {
-  await axios.delete(`http://localhost:5000/api/songs/${songId}`);
+  await axios.delete(`https://music-platform-5vyg.onrender.com/api/songs/${songId}`);
   return songId;
 });
 
