@@ -10,7 +10,7 @@ const path = require('path');
 app.use(express.json());
 
 const corsOptions = {
-  origin: 'music-platform-v787.vercel.app', // The exact origin of your frontend
+  origin: 'https://music-platform-v787.vercel.app', // The exact origin of your frontend
   credentials: true, // Allow cookies to be sent
   methods: ['GET', 'POST', 'PUT', 'DELETE'], // Specify allowed methods
 };
