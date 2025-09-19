@@ -10,21 +10,21 @@ const path = require('path');
 app.use(express.json());
 
 const allowedOrigins = [
-  'http://localhost:5173',
-  'https://music-platform-v787.vercel.app',
-  'https://music-platform-r71s.vercel.app',
+  'http://localhost:5173',       // dev
+  /\.vercel\.app$/               // regex for all Vercel deploys
 ];
 
 const corsOptions = {
   origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
+    if (!origin) return callback(null, true); // allow tools like Postman
+    if (allowedOrigins.some(o => (o instanceof RegExp ? o.test(origin) : o === origin))) {
       callback(null, true);
     } else {
       callback(new Error('Not allowed by CORS'));
     }
   },
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE']
 };
 
 app.use(cors(corsOptions));
