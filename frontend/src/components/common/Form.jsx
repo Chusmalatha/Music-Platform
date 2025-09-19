@@ -2,7 +2,7 @@ import React from 'react';
 
 const Form = ({ fields, onSubmit, buttonText, errorMessage }) => {
   return (
-    <form onSubmit={onSubmit} className="bg-gray-800 p-8 rounded-lg shadow-md w-80 mx-auto" encType="multipart/form-data">
+    <form onSubmit={onSubmit} className="bg-black p-8 rounded-lg shadow-md w-80 mx-auto" encType="multipart/form-data">
       {fields.map(({ name, type, placeholder, value, onChange }) => (
         <div key={name} className="mb-4">
           {type === "file" ? (
@@ -32,7 +32,7 @@ const Form = ({ fields, onSubmit, buttonText, errorMessage }) => {
       )}
       <button
         type="submit"
-        className="w-full py-2 bg-indigo-600 rounded text-white hover:bg-indigo-700 transition"
+        className="w-full py-2 bg-white  rounded  hover:bg-indigo-700 transition"
       >
         {buttonText}
       </button>
