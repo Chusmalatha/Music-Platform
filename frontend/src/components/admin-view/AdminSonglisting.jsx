@@ -21,7 +21,6 @@ const AdminSongsList = () => {
     e.preventDefault();
     const newSong = { title, artist, album, imageUrl, audioUrl };
     dispatch(addSong(newSong));
-    // Reset form
     setTitle("");
     setArtist("");
     setAlbum("");
@@ -37,20 +36,62 @@ const AdminSongsList = () => {
   };
 
   return (
-    <div className="relative w-screen h-screen bg-gray-900 text-white overflow-y-auto px-8 py-8">
-      {/* Button fixed top right */}
+    <div className="bg-gray-900 text-white min-h-screen flex flex-col">
+      {/* Content container */}
+      <div className="flex-1 overflow-y-auto px-4 sm:px-8 py-8">
+        <h2 className="text-3xl font-bold mb-6 text-center sm:text-left">
+          Manage Songs
+        </h2>
+
+        {loading && <p className="mt-6 text-center">Loading...</p>}
+        {error && <p className="mt-6 text-center text-red-500">{error}</p>}
+
+        {/* Song Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6 mt-6">
+          {Array.isArray(songs) &&
+            songs.map(({ _id, title, artist, album, imageUrl, audioUrl }) => (
+              <div
+                key={_id}
+                className="bg-gray-800 rounded-xl p-4 shadow-md flex flex-col hover:scale-105 transition-transform duration-200"
+              >
+                <img
+                  src={imageUrl}
+                  alt={title}
+                  className="mb-3 rounded-lg h-48 w-full object-cover"
+                />
+                <h3 className="text-lg font-semibold">{title}</h3>
+                <p className="text-gray-400 text-sm mb-2">
+                  {artist} {album && `- ${album}`}
+                </p>
+                <audio
+                  controls
+                  src={audioUrl}
+                  className="mt-auto w-full rounded"
+                />
+                <button
+                  onClick={() => handleDelete(_id)}
+                  className="bg-red-600 hover:bg-red-500 mt-3 rounded py-2 font-semibold"
+                >
+                  Delete
+                </button>
+              </div>
+            ))}
+        </div>
+      </div>
+
+      {/* Floating Add Button */}
+      
       <button
-        onClick={() => setShowForm(!showForm)}
-        className="fixed top-20 right-6 bg-blue-800 hover:bg-blue-700 text-white font-bold px-4 py-2 rounded shadow z-50"
-      >
-        {showForm ? "Close Form" : "Add New Song"}
-      </button>
+  onClick={() => setShowForm(!showForm)}
+  className="fixed bottom-6 right-6 bg-blue-800 hover:bg-blue-700 text-white font-bold w-12 h-12 flex items-center justify-center rounded-full shadow-lg z-50 transition"
+>
+  {showForm ? "×" : "+"}
+</button>
 
-      <h2 className="text-3xl font-bold mb-6">Manage Songs</h2>
 
-      {/* Modal form overlay */}
+      {/* Modal Form */}
       {showForm && (
-        <div className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-40">
+        <div className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-50">
           <form
             onSubmit={handleAddSong}
             className="bg-gray-800 p-6 rounded-lg shadow-lg max-w-md w-full relative"
@@ -58,91 +99,59 @@ const AdminSongsList = () => {
             <button
               type="button"
               onClick={() => setShowForm(false)}
-              className="absolute top-2 right-2 bg-gray-700 text-white text-xl font-bold rounded px-1 py-1"
+              className="absolute top-2 right-2 bg-gray-700 text-white text-xl font-bold rounded px-2 py-1"
             >
-              x
+              ×
             </button>
-
             <input
-              className="w-full p-2 rounded bg-gray-700 mb-3"
+              className="w-full p-2 rounded bg-gray-700 mb-4 placeholder-gray-300"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Title"
               required
             />
             <input
-              className="w-full p-2 rounded bg-gray-700 mb-3"
+              className="w-full p-2 rounded bg-gray-700 mb-4 placeholder-gray-300"
               value={artist}
               onChange={(e) => setArtist(e.target.value)}
               placeholder="Artist"
               required
             />
             <input
-              className="w-full p-2 rounded bg-gray-700 mb-3"
+              className="w-full p-2 rounded bg-gray-700 mb-4 placeholder-gray-300"
               value={album}
               onChange={(e) => setAlbum(e.target.value)}
               placeholder="Album"
             />
             <input
-              className="w-full p-2 rounded bg-gray-700 mb-3"
+              className="w-full p-2 rounded bg-gray-700 mb-4 placeholder-gray-300"
               value={imageUrl}
               onChange={(e) => setImageUrl(e.target.value)}
               placeholder="Image URL"
             />
-
-            {/* Only Audio URL Input */}
             <input
-              className="w-full p-2 rounded bg-gray-700 mb-3"
+              className="w-full p-2 rounded bg-gray-700 mb-4 placeholder-gray-300"
               value={audioUrl}
               onChange={(e) => setAudioUrl(e.target.value)}
               placeholder="Audio URL (mp3 link)"
               required
             />
-
             {audioUrl && (
-              <audio controls src={audioUrl} className="w-full mb-3" />
+              <audio
+                controls
+                src={audioUrl}
+                className="w-full mb-4 rounded"
+              />
             )}
-
             <button
               type="submit"
-              className="bg-blue-800 hover:bg-blue-700 px-4 py-2 rounded w-full"
+              className="bg-blue-800 hover:bg-blue-700 px-4 py-2 rounded w-full font-semibold"
             >
               Add Song
             </button>
           </form>
         </div>
       )}
-
-      {loading && <p className="mt-6">Loading...</p>}
-      {error && <p className="mt-6 text-blue-800">{error}</p>}
-
-      {/* Song Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-6">
-        {Array.isArray(songs) &&
-          songs.map(({ _id, title, artist, album, imageUrl, audioUrl }) => (
-            <div
-              key={_id}
-              className="bg-gray-800 rounded-xl p-4 shadow-md flex flex-col hover:scale-105 transition-transform duration-200"
-            >
-              <img
-                src={imageUrl}
-                alt={title}
-                className="mb-3 rounded-lg h-48 w-full object-cover"
-              />
-              <h3 className="text-lg font-semibold">{title}</h3>
-              <p className="text-gray-400 text-sm mb-2">
-                {artist} {album && `- ${album}`}
-              </p>
-              <audio controls src={audioUrl} className="mt-auto w-full" />
-              <button
-                onClick={() => handleDelete(_id)}
-                className="bg-blue-800 hover:bg-blue-700 mt-3 rounded py-1"
-              >
-                Delete
-              </button>
-            </div>
-          ))}
-      </div>
     </div>
   );
 };

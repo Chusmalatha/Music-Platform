@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import  Form  from '../../components/common/Form';
+import Form from '../../components/common/Form';
 import { Link, useNavigate } from 'react-router-dom';
 import { registerUser } from '../../app/authSlice';
 import { useDispatch } from 'react-redux';
@@ -13,23 +13,20 @@ const Register = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  try {
-    const data = await dispatch(registerUser({ userName: username, email, password }));
-    if (data?.payload?.success) {
-      toast.success((data.payload.message || "Registration successful!"), { autoClose: 500 });
-      navigate("/auth/login");
-    } else {
-      toast.error((data.payload.message || "Registration failed!",{ autoClose: 500 }));
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const data = await dispatch(registerUser({ userName: username, email, password }));
+      if (data?.payload?.success) {
+        toast.success(data.payload.message || "Registration successful!", { autoClose: 500 });
+        navigate("/auth/login");
+      } else {
+        toast.error(data?.payload?.message || "Registration failed!", { autoClose: 500 });
+      }
+    } catch (e) {
+      toast.error("Something went wrong!", { autoClose: 500 });
     }
-  } catch (e) {
-    toast.error("Something went wrong!", { autoClose: 500 });
-  }
-};
-
-
+  };
 
   const fields = [
     {
@@ -56,13 +53,14 @@ const handleSubmit = async (e) => {
   ];
 
   return (
-    <div className="mx-auto w-full max-w-md space-y-6">
+    <div className="mx-auto w-full max-w-md px-4 sm:px-6 lg:px-8 space-y-6">
+      {/* Heading */}
       <div className="text-center">
-        <h1 className="text-3xl font-bold tracking-tight text-foreground">
+        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
           Create new account
         </h1>
-        <p className="mt-2">
-          Already have an account
+        <p className="mt-2 text-sm sm:text-base text-gray-400">
+          Already have an account?
           <Link
             className="font-medium ml-2 text-primary hover:underline"
             to="/auth/login"
@@ -71,6 +69,8 @@ const handleSubmit = async (e) => {
           </Link>
         </p>
       </div>
+
+      {/* Form */}
       <Form
         fields={fields}
         onSubmit={handleSubmit}

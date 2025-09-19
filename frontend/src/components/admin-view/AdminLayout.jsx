@@ -1,14 +1,13 @@
-import React from 'react';
-import AdminHeader from './AdminHeader';
-import { Outlet } from 'react-router-dom';
+import React from "react";
+import AdminHeader from "./AdminHeader";
+import { Outlet } from "react-router-dom";
 
 const AdminLayout = () => {
   return (
-    <div>
+    <div className="min-h-screen bg-gray-900 text-white relative">
       <AdminHeader />
-      <main className="pt-16 min-h-screen bg-gray-900 text-white px-6">
-        {/* padding top to offset fixed header height */}
-        <Outlet /> {/* Render nested routes/pages here */}
+      <main className="pt-16 px-4 sm:px-6 md:px-8 lg:px-12 min-h-[calc(100vh-64px)]">
+        <Outlet />
       </main>
     </div>
   );

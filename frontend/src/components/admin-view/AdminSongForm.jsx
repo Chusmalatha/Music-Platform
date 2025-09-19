@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { addSong, updateSong } from "../../app/adminSongsSlice";
-import Form from "../common/form";
 
 const AdminSongForm = ({ existingSong, onSuccess }) => {
   const dispatch = useDispatch();
@@ -43,25 +42,135 @@ const AdminSongForm = ({ existingSong, onSuccess }) => {
     }
   };
 
-  // Include file inputs as part of fields passed to Form
-  const fields = [
-    { name: "title", type: "text", placeholder: "Song Title", value: title, onChange: e => setTitle(e.target.value) },
-    { name: "artist", type: "text", placeholder: "Artist", value: artist, onChange: e => setArtist(e.target.value) },
-    { name: "album", type: "text", placeholder: "Album", value: album, onChange: e => setAlbum(e.target.value) },
-    { name: "genre", type: "text", placeholder: "Genre", value: genre, onChange: e => setGenre(e.target.value) },
-    { name: "releaseDate", type: "date", placeholder: "Release Date", value: releaseDate, onChange: e => setReleaseDate(e.target.value) },
-    { name: "duration", type: "number", placeholder: "Duration (seconds)", value: duration, onChange: e => setDuration(e.target.value) },
-    { name: "image", type: "file", placeholder: "Upload Song Image", onChange: e => setImageFile(e.target.files[0]) },
-    { name: "audio", type: "file", placeholder: "Upload Audio File", onChange: e => setAudioFile(e.target.files[0]) },
-  ];
-
   return (
-    <Form 
-      fields={fields} 
-      onSubmit={handleSubmit} 
-      buttonText={existingSong ? "Update Song" : "Add Song"} 
-      errorMessage={errorMessage} 
-    />
+    <form
+      onSubmit={handleSubmit}
+      className="max-w-lg mx-auto p-6 bg-gray-800 rounded-lg shadow-lg"
+      encType="multipart/form-data"
+    >
+      <div className="mb-4">
+        <label htmlFor="title" className="block mb-1 text-sm font-semibold text-white">
+          Song Title
+        </label>
+        <input
+          id="title"
+          type="text"
+          placeholder="Song Title"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          required
+          className="w-full rounded border border-gray-700 bg-gray-900 px-3 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+
+      <div className="mb-4">
+        <label htmlFor="artist" className="block mb-1 text-sm font-semibold text-white">
+          Artist
+        </label>
+        <input
+          id="artist"
+          type="text"
+          placeholder="Artist"
+          value={artist}
+          onChange={(e) => setArtist(e.target.value)}
+          required
+          className="w-full rounded border border-gray-700 bg-gray-900 px-3 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+
+      <div className="mb-4">
+        <label htmlFor="album" className="block mb-1 text-sm font-semibold text-white">
+          Album
+        </label>
+        <input
+          id="album"
+          type="text"
+          placeholder="Album"
+          value={album}
+          onChange={(e) => setAlbum(e.target.value)}
+          className="w-full rounded border border-gray-700 bg-gray-900 px-3 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+
+      <div className="mb-4">
+        <label htmlFor="genre" className="block mb-1 text-sm font-semibold text-white">
+          Genre
+        </label>
+        <input
+          id="genre"
+          type="text"
+          placeholder="Genre"
+          value={genre}
+          onChange={(e) => setGenre(e.target.value)}
+          className="w-full rounded border border-gray-700 bg-gray-900 px-3 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+
+      <div className="mb-4">
+        <label htmlFor="releaseDate" className="block mb-1 text-sm font-semibold text-white">
+          Release Date
+        </label>
+        <input
+          id="releaseDate"
+          type="date"
+          placeholder="Release Date"
+          value={releaseDate}
+          onChange={(e) => setReleaseDate(e.target.value)}
+          className="w-full rounded border border-gray-700 bg-gray-900 px-3 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+
+      <div className="mb-4">
+        <label htmlFor="duration" className="block mb-1 text-sm font-semibold text-white">
+          Duration (seconds)
+        </label>
+        <input
+          id="duration"
+          type="number"
+          placeholder="Duration (seconds)"
+          value={duration}
+          onChange={(e) => setDuration(e.target.value)}
+          className="w-full rounded border border-gray-700 bg-gray-900 px-3 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+
+      <div className="mb-4">
+        <label htmlFor="image" className="block mb-1 text-sm font-semibold text-white">
+          Upload Song Image
+        </label>
+        <input
+          id="image"
+          type="file"
+          accept="image/*"
+          onChange={(e) => setImageFile(e.target.files[0])}
+          className="w-full text-white"
+        />
+      </div>
+
+      <div className="mb-6">
+        <label htmlFor="audio" className="block mb-1 text-sm font-semibold text-white">
+          Upload Audio File
+        </label>
+        <input
+          id="audio"
+          type="file"
+          accept="audio/*"
+          onChange={(e) => setAudioFile(e.target.files[0])}
+          className="w-full text-white"
+        />
+      </div>
+
+      {errorMessage && (
+        <p className="mb-4 text-red-500 text-sm">{errorMessage}</p>
+      )}
+
+      <button
+        type="submit"
+        className="w-full md:w-auto bg-blue-700 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition"
+      >
+        {existingSong ? "Update Song" : "Add Song"}
+      </button>
+    </form>
   );
 };
 
