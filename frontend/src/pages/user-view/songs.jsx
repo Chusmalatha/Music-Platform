@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchSongs } from '../../app/adminSongsSlice';
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchSongs } from "../../app/adminSongsSlice";
 
 const UserSongsList = () => {
   const dispatch = useDispatch();
@@ -11,7 +11,7 @@ const UserSongsList = () => {
   }, [dispatch]);
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white w-full px-8 py-6">
+    <div className="relative w-screen h-screen bg-gray-900 text-white overflow-y-auto px-8 py-6">
       {/* Page Title */}
       <h2 className="text-3xl font-bold mb-6">Songs</h2>
 

@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchSongs, addSong, deleteSong } from '../../app/adminSongsSlice';
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchSongs, addSong, deleteSong } from "../../app/adminSongsSlice";
 
 const AdminSongsList = () => {
   const dispatch = useDispatch();
   const { songs, loading, error } = useSelector((state) => state.admin);
 
   const [showForm, setShowForm] = useState(false);
-  const [title, setTitle] = useState('');
-  const [artist, setArtist] = useState('');
-  const [album, setAlbum] = useState('');
-  const [imageUrl, setImageUrl] = useState('');
-  const [audioUrl, setAudioUrl] = useState('');
+  const [title, setTitle] = useState("");
+  const [artist, setArtist] = useState("");
+  const [album, setAlbum] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
+  const [audioUrl, setAudioUrl] = useState("");
 
   useEffect(() => {
     dispatch(fetchSongs());
@@ -22,28 +22,28 @@ const AdminSongsList = () => {
     const newSong = { title, artist, album, imageUrl, audioUrl };
     dispatch(addSong(newSong));
     // Reset form
-    setTitle('');
-    setArtist('');
-    setAlbum('');
-    setImageUrl('');
-    setAudioUrl('');
+    setTitle("");
+    setArtist("");
+    setAlbum("");
+    setImageUrl("");
+    setAudioUrl("");
     setShowForm(false);
   };
 
   const handleDelete = (id) => {
-    if (window.confirm('Are you sure you want to delete this song?')) {
+    if (window.confirm("Are you sure you want to delete this song?")) {
       dispatch(deleteSong(id));
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white w-full px-8 py-8">
+    <div className="relative w-screen h-screen bg-gray-900 text-white overflow-y-auto px-8 py-8">
       {/* Button fixed top right */}
       <button
         onClick={() => setShowForm(!showForm)}
         className="fixed top-20 right-6 bg-blue-800 hover:bg-blue-700 text-white font-bold px-4 py-2 rounded shadow z-50"
       >
-        {showForm ? 'Close Form' : 'Add New Song'}
+        {showForm ? "Close Form" : "Add New Song"}
       </button>
 
       <h2 className="text-3xl font-bold mb-6">Manage Songs</h2>
