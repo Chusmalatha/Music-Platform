@@ -9,16 +9,26 @@ const path = require('path');
 
 app.use(express.json());
 
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://music-platform-v787.vercel.app',
+  'https://music-platform-r71s.vercel.app',
+];
+
 const corsOptions = {
-  origin: [
-    'http://localhost:5173',
-    'https://music-platform-v787.vercel.app'
-  ], // The exact origin of your frontend
-  credentials: true, // Allow cookies to be sent
-  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Specify allowed methods
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
 };
 
 app.use(cors(corsOptions));
+
 
 mongoose.connect(process.env.MONGO_URI_USERS)
 .then(() => console.log('MongoDB connected'))
