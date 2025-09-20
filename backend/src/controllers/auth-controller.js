@@ -79,11 +79,12 @@ const loginUser = async (req, res) => {
 
     // Send token as cookie and user info in JSON response
     res
-      .cookie("token", token, { httpOnly: true, secure: false }) // Update secure to true in prod w/ HTTPS
+      .cookie("token", token, { httpOnly: true, secure: true, maxAge : 60*60, sameSite: "none" }) // Update secure to true in prod w/ HTTPS
       .status(200)
       .json({
         success: true,
         message: "Logged in successfully",
+        token,
         user: {
           email: checkUser.email,
           role: checkUser.role,

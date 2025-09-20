@@ -14,14 +14,23 @@ import UserSongs from './pages/user-view/songs';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import UserFavourites from './pages/user-view/favouites';
+import { checkAuth } from './app/authSlice';
 import Contact from './pages/user-view/contact';
-
 // Replace with your actual auth state from redux or context
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+
 
 function App() {
   const { user, isAuthenticated } = useSelector((state) => state.auth || {});
 
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(checkAuth())
+  }, [dispatch]);
+
+  
   return (
     <Router>
       <CheckAuth isAuthenticated={isAuthenticated} user={user}>
