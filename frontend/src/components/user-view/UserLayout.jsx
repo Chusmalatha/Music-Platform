@@ -4,9 +4,9 @@ import { Outlet } from 'react-router-dom';
 
 const UserLayout = () => {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen overflow-hidden bg-gray-50 flex flex-col">
       <UserHeader />
-      <main className="pt-16 px-4 sm:px-6 lg:px-8">
+      <main className="pt-16 max-w-[100vw] overflow-hidden">
         <Outlet /> {/* Nested routes render here */}
       </main>
     </div>

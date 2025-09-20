@@ -36,7 +36,7 @@ const AdminSongsList = () => {
   };
 
   return (
-    <div className="bg-gray-900 text-white min-h-screen flex flex-col">
+    <div className="bg-white-900 text-white min-h-screen flex flex-col">
       {/* Content container */}
       <div className="flex-1 overflow-y-auto px-4 sm:px-8 py-8">
         <h2 className="text-3xl font-bold mb-6 text-center sm:text-left">
