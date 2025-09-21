@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate} from 'react-router-dom';
 import AdminLayout from './components/admin-view/AdminLayout';
 import AdminSongsList from './components/admin-view/AdminSonglisting';
 import AuthLayout from './components/auth/layout';
@@ -33,8 +33,20 @@ function App() {
   
   return (
     <Router>
+
+      
       <CheckAuth isAuthenticated={isAuthenticated} user={user}>
         <Routes>
+
+          <Route path="/" element={<Navigate to="/user/home" replace />} /> 
+
+          <Route path="/user/*" element={<UserLayout />}>
+            <Route path="home" element={<UserHome />} /> 
+            <Route path="songs" element={<UserSongs />} />
+            <Route path="favourites" element={<UserFavourites />} />
+            <Route path="Contact" element={<Contact />} />
+          </Route>
+          
           {/* Auth routes */}
           <Route path="/auth" element={<AuthLayout />}>
             <Route path="login" element={<Login />} />
@@ -46,12 +58,12 @@ function App() {
             <Route path="songslist" element={<AdminSongsList />} />
           </Route>
 
-          <Route path="/user/*" element={<UserLayout />}>
+          {/* <Route path="/user/*" element={<UserLayout />}>
             <Route path="home" element={<UserHome />} />
             <Route path="songs" element={<UserSongs />} />
             <Route path="favourites" element={<UserFavourites />} />
             <Route path="Contact" element={<Contact />} />
-          </Route>
+          </Route> */}
       
           {/* Unauthorized */}
           <Route path="/unauth-page" element={<UnauthPage />} />

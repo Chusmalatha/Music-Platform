@@ -1,74 +1,74 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
+// Initial state
 const initialState = {
   isAuthenticated: false,
-  isLoading: true,
+  isLoading: false,
   user: null,
-  
-
+  error: null,
 };
 
+// ------------------- Thunks -------------------
+
+// Register user
 export const registerUser = createAsyncThunk(
   "auth/register",
-  async (formData) => {
-    const response = await axios.post(
-      "https://music-platform-5vyg.onrender.com/api/auth/register", // ✅ correct endpoint
-      formData,
-      {
-        withCredentials: true,
-      }
-    );
-    return response.data;
+  async (formData, thunkAPI) => {
+    try {
+      const response = await axios.post(
+        "https://music-platform-5vyg.onrender.com/api/auth/register",
+        formData,
+        { withCredentials: true }
+      );
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(
+        error.response?.data?.message || error.message
+      );
+    }
   }
 );
 
-
+// Login user
 export const loginUser = createAsyncThunk(
   "auth/login",
-  async (formData) => {
-    const response = await axios.post(
-      "https://music-platform-5vyg.onrender.com/api/auth/login", // ✅ correct endpoint
-      formData,
-      {
-        withCredentials: true,
-      }
-    );
-    return response.data;
+  async (formData, thunkAPI) => {
+    try {
+      const response = await axios.post(
+        "https://music-platform-5vyg.onrender.com/api/auth/login",
+        formData,
+        { withCredentials: true }
+      );
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(
+        error.response?.data?.message || error.message
+      );
+    }
   }
 );
 
-{/*export const logoutUser = createAsyncThunk(
-  "auth/logout",
-  async () => {
-    const response = await axios.post(
-      "https://music-platform-5vyg.onrender.com/api/auth/logout", // ✅ correct endpoint spelling
-      {}, // No body needed, so pass empty object
-      { withCredentials: true } // Pass as a config object
-    );
-    return response.data;
-  }
-);
-*/}
-
+// Check authentication
 export const checkAuth = createAsyncThunk(
   "auth/checkauth",
-  async () => {
-    const response = await axios.get(
-      "https://music-platform-5vyg.onrender.com/api/auth/check-auth", // ✅ correct endpoint
-      {
-        withCredentials : true,
-        headers : {
-          "Cache-control" : "no-store, no-cache, must-revalidate, proxy-revalidate"
-        }
+  async (_, thunkAPI) => {
+    try {
+      const response = await axios.get(
+        "https://music-platform-5vyg.onrender.com/api/auth/check-auth",
+        { withCredentials: true }
+      );
+      return response.data;
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        return thunkAPI.rejectWithValue("Not authenticated");
       }
-      
-    );
-    return response.data;
+      return thunkAPI.rejectWithValue(error.message);
+    }
   }
 );
 
-
+// ------------------- Slice -------------------
 const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -77,54 +77,69 @@ const authSlice = createSlice({
       state.user = action.payload;
       state.isAuthenticated = true;
     },
+    logout: (state) => {
+      state.user = null;
+      state.isAuthenticated = false;
+      state.error = null;
+    },
   },
   extraReducers: (builder) => {
     builder
+      // Register
       .addCase(registerUser.pending, (state) => {
         state.isLoading = true;
+        state.error = null;
       })
       .addCase(registerUser.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.user = action.payload.user; // ✅ store user data
-        state.isAuthenticated = false;
+        state.user = action.payload.user || null;
+        state.isAuthenticated = false; // user still needs to login
+        state.error = null;
       })
-      .addCase(registerUser.rejected, (state) => {
+      .addCase(registerUser.rejected, (state, action) => {
         state.isLoading = false;
         state.user = null;
-        state.isAuthenticated = false; // ✅ fixed typo
+        state.isAuthenticated = false;
+        state.error = action.payload;
       })
+
+      // Login
       .addCase(loginUser.pending, (state) => {
         state.isLoading = true;
+        state.error = null;
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.user = action.payload.success ? action.payload.user : null; // ✅ store user data
-        state.isAuthenticated = true;
+        state.user = action.payload.success ? action.payload.user : null;
+        state.isAuthenticated = action.payload.success || false;
+        state.error = null;
       })
-      .addCase(loginUser.rejected, (state) => {
+      .addCase(loginUser.rejected, (state, action) => {
         state.isLoading = false;
         state.user = null;
-        state.isAuthenticated = false; // ✅ fixed typo
+        state.isAuthenticated = false;
+        state.error = action.payload;
       })
+
+      // Check Auth
       .addCase(checkAuth.pending, (state) => {
         state.isLoading = true;
+        state.error = null;
       })
       .addCase(checkAuth.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.user = action.payload.success ? action.payload.user : null; // ✅ store user data
-        state.isAuthenticated = action.payload.success;
+        state.user = action.payload.success ? action.payload.user : null;
+        state.isAuthenticated = action.payload.success || false;
+        state.error = null;
       })
-      .addCase(checkAuth.rejected, (state) => {
+      .addCase(checkAuth.rejected, (state, action) => {
         state.isLoading = false;
         state.user = null;
-        state.isAuthenticated = false; // ✅ fixed typo
+        state.isAuthenticated = false;
+        // state.error = action.payload || "Not authenticated";
       });
   },
 });
 
-export const { setUser } = authSlice.actions;
+export const { setUser, logout } = authSlice.actions;
 export default authSlice.reducer;
-
-
-
- 

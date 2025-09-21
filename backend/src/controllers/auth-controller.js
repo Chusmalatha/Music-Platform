@@ -79,7 +79,7 @@ const loginUser = async (req, res) => {
 
     // Send token as cookie and user info in JSON response
     res
-      .cookie("token", token, { httpOnly: true, secure: true, maxAge : 60*60, sameSite: "none" }) // Update secure to true in prod w/ HTTPS
+      .cookie("token", token, { httpOnly: true, secure: process.env.NODE_ENV === "production", maxAge : 60*60*1000, sameSite: "none" }) // Update secure to true in prod w/ HTTPS
       .status(200)
       .json({
         success: true,
@@ -119,7 +119,8 @@ const logoutUser = (req, res) => {
 // Authentication Middleware
 const authMiddleware = async (req, res, next) => {
   try {
-    const token = req.cookies.token;
+    const token = req.cookies.token || req.headers.authorization?.split(" ")[1];
+
     if (!token) {
       return res.status(401).json({
         success: false,

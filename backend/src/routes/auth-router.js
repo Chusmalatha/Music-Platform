@@ -15,6 +15,6 @@ router.get("/check-auth", authMiddleware, (req, res) => {
         message : "Authenticated User!",
         user,
     });
-});
+}); 
 
 module.exports = router;
