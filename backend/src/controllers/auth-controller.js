@@ -43,6 +43,7 @@ const registerUser = async (req, res) => {
 };
 
 // Login User
+// Login User
 const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -73,25 +74,32 @@ const loginUser = async (req, res) => {
         email: checkUser.email,
         userName: checkUser.userName,
       },
-      "CLIENT_SECRET_KEY", // Replace with your actual secret from env config
+      "CLIENT_SECRET_KEY", // use process.env.CLIENT_SECRET_KEY in prod
       { expiresIn: "60m" }
     );
 
-    // Send token as cookie and user info in JSON response
-    res
-      .cookie("token", token, { httpOnly: true, secure: process.env.NODE_ENV === "production", maxAge : 60*60*1000, sameSite: "none" }) // Update secure to true in prod w/ HTTPS
-      .status(200)
-      .json({
-        success: true,
-        message: "Logged in successfully",
-        token,
-        user: {
-          email: checkUser.email,
-          role: checkUser.role,
-          id: checkUser._id,
-          userName: checkUser.userName,
-        },
-      });
+    // ✅ Send token as cookie
+    res.cookie("token", token, {
+  httpOnly: true,
+  secure: true,          // required on Render (HTTPS)
+  sameSite: "none",      // allow cross-origin cookie
+  domain: "onrender.com", // 👈 add this line
+  path: "/",
+  maxAge: 60 * 60 * 1000,
+});
+
+
+    // Send user info in response
+    res.status(200).json({
+      success: true,
+      message: "Logged in successfully",
+      user: {
+        email: checkUser.email,
+        role: checkUser.role,
+        id: checkUser._id,
+        userName: checkUser.userName,
+      },
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -101,44 +109,49 @@ const loginUser = async (req, res) => {
   }
 };
 
+
 // Logout User
-const logoutUser = (req, res) => {
-  res
-    .clearCookie("token", {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      path: "/",
-    })
-    .json({
-      success: true,
-      message: "Logged out successfully!",
-    });
-};
+  const logoutUser = (req, res) => {
+    res
+      .clearCookie("token", {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+        path: "/",
+      })
+      .json({
+        success: true,
+        message: "Logged out successfully!",
+      });
+  };
 
 // Authentication Middleware
 const authMiddleware = async (req, res, next) => {
   try {
     const token = req.cookies.token || req.headers.authorization?.split(" ")[1];
+    console.log("🧩 Token found:", token ? "Yes" : "No");
+    console.log("🍪 Cookies received:", req.cookies);
+
 
     if (!token) {
       return res.status(401).json({
         success: false,
-        message: "Unauthorized user!",
+        message: "Unauthorized user! No token found.",
       });
     }
 
     const decoded = jwt.verify(token, "CLIENT_SECRET_KEY");
-    req.user = decoded; // You can customize property to req.user with info you want
+    req.user = decoded;
     next();
   } catch (error) {
-    console.log("Auth middleware error:", error);
+    console.log("Auth middleware error:", error.message);
     res.status(401).json({
       success: false,
       message: "Unauthorized user!",
     });
   }
 };
+
 
 module.exports = {
   registerUser,
