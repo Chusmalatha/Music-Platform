@@ -3,11 +3,11 @@ import axios from "axios";
 
 axios.defaults.withCredentials = true; 
 
-
 // Initial state
 const initialState = {
   isAuthenticated: false,
   isLoading: false,
+  isChecking: true, // ✅ New: true until auth check is complete
   user: null,
   error: null,
 };
@@ -127,19 +127,21 @@ const authSlice = createSlice({
       // Check Auth
       .addCase(checkAuth.pending, (state) => {
         state.isLoading = true;
+        state.isChecking = true; // ✅ start checking
         state.error = null;
       })
       .addCase(checkAuth.fulfilled, (state, action) => {
         state.isLoading = false;
+        state.isChecking = false; // ✅ done checking
         state.user = action.payload.success ? action.payload.user : null;
         state.isAuthenticated = action.payload.success || false;
         state.error = null;
       })
       .addCase(checkAuth.rejected, (state, action) => {
         state.isLoading = false;
+        state.isChecking = false; // ✅ done checking
         state.user = null;
         state.isAuthenticated = false;
-        // state.error = action.payload || "Not authenticated";
       });
   },
 });

@@ -81,12 +81,12 @@ const loginUser = async (req, res) => {
     // ✅ Send token as cookie
     res.cookie("token", token, {
   httpOnly: true,
-  secure: true,          // required on Render (HTTPS)
-  sameSite: "none",      // allow cross-origin cookie
-  domain: "onrender.com", // 👈 add this line
+  secure: process.env.NODE_ENV === "production",
+  sameSite: "none",
   path: "/",
   maxAge: 60 * 60 * 1000,
 });
+
 
 
     // Send user info in response
