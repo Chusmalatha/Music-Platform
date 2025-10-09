@@ -6,8 +6,7 @@ const router = express.Router();
 
 router.post("/register", registerUser);
 router.post("/login", loginUser);
-
-//router.post("/logout", logoutUser);
+router.post("/logout", logoutUser);
 router.get("/check-auth", authMiddleware, (req, res) => {
   res.json({
     success: true,

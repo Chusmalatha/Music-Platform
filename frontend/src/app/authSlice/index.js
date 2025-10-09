@@ -52,6 +52,21 @@ export const loginUser = createAsyncThunk(
   }
 );
 
+//logout user
+export const logoutUser = createAsyncThunk(
+  "auth/logout",
+  async () => {
+    const response = await axios.post(
+      "https://music-platform-5vyg.onrender.com/api/auth/logout",
+      {},
+      { withCredentials: true }
+    );
+    return response.data;
+  }
+);
+
+
+
 // Check authentication
 export const checkAuth = createAsyncThunk(
   "auth/checkauth",
@@ -142,9 +157,14 @@ const authSlice = createSlice({
         state.isChecking = false; // ✅ done checking
         state.user = null;
         state.isAuthenticated = false;
+      })
+      .addCase(logoutUser.fulfilled, (state) => {
+        state.isLoading = false;
+        state.user = null; // ✅ store user data
+        state.isAuthenticated = false;
       });
   },
 });
 
-export const { setUser, logout } = authSlice.actions;
+export const { setUser } = authSlice.actions;
 export default authSlice.reducer;

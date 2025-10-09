@@ -5,6 +5,7 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const path = require("path");
 
+
 const app = express();
 
 app.use(cookieParser());
@@ -21,7 +22,7 @@ const allowedOrigins = [
 ];
 
 app.use(cors({
-  origin: ["https://your-frontend.vercel.app", "http://localhost:5173"],
+  origin: ["https://music-platform-frontend.vercel.app", "http://localhost:5173"],
   credentials: true
 }));
 

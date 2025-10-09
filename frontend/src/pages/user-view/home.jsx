@@ -27,10 +27,16 @@ const UserHome = () => {
         </p>
 
         {/* Buttons */}
+        <div className="flex space-x-10">
+          <button className="bg-blue-700 text-white">
+            <Link to="/auth/register">Regitser</Link>
+          </button>
+          <button className= "bg-blue-700 text-white">
+            <Link to="/auth/login">Login</Link>
+          </button>
+        </div>
       </div>
-      <button className="bg-blue-700 text-white">
-        <Link to="/auth/login">Login</Link>
-      </button>
+      
     </div>
   );
 };
