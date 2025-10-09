@@ -79,12 +79,13 @@ const loginUser = async (req, res) => {
     );
 
     // ✅ Send token as cookie
-    res.cookie("token", token, {
+    
+res.cookie("token", token, {
   httpOnly: true,
-  secure: process.env.NODE_ENV === "production",
-  sameSite: "none",
+  secure: process.env.NODE_ENV === "production", // true only in prod
+  sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
   path: "/",
-  maxAge: 60 * 60 * 1000,
+  // maxAge: 60 * 60 * 1000,
 });
 
 
