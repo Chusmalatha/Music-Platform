@@ -17,12 +17,12 @@ const songRoutes = require("./routes/songRoutes");
 
 // ✅ CORS Setup
 const allowedOrigins = [
-  "https://music-platform-frontend.vercel.app",
+  "https://music-platform-v787.vercel.app",
   "http://localhost:5173",
 ];
 
 app.use(cors({
-  origin: ["https://music-platform-frontend.vercel.app", "http://localhost:5173"],
+  origin: ["https://music-platform-v787.vercel.app", "http://localhost:5173"],
   credentials: true
 }));
 
