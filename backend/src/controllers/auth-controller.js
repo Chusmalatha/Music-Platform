@@ -111,19 +111,26 @@ res.cookie("token", token, {
 };
 
 
+
 // Logout User
 const logoutUser = (req, res) => {
-  try{
-  
-    res.clearCookie("token")
-    return res.json({
-      success: true,
-      message: "Logged out successfully!",
-    });}
-    catch(error){
-      return res.json({message:"Internal server error",success:false});
-    }
+  try {
+// ✅ FIX: Clear the cookie using the exact same options as set during login
+res.clearCookie("token", {
+ httpOnly: true,
+secure: process.env.NODE_ENV === "production", // MUST MATCH LOGIN
+sameSite: process.env.NODE_ENV === "production" ? "none" : "lax", // MUST MATCH LOGIN
+ path: "/", // MUST MATCH LOGIN
+});
 
+ return res.json({
+ success: true,
+ message: "Logged out successfully!",
+ });
+} catch (error) {
+  console.error("Logout error:", error); // Use console.error for actual errors
+ return res.status(500).json({ message: "Internal server error", success: false });
+ }
 };
 
 // Authentication Middleware

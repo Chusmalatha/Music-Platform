@@ -11,14 +11,11 @@ const UserHeader = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  async function handleLogOut() {
-  try {
-    await dispatch(logoutUser()); // ✅ wait for the API
-    navigate("/auth/login");
-  } catch (err) {
-    console.error("Logout failed:", err);
-  }
-}
+  
+  function handleLogOut(){
+          dispatch(logoutUser());
+          
+      }
 
 
   return (

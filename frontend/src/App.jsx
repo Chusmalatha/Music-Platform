@@ -22,7 +22,7 @@ import { useEffect } from 'react';
 
 
 function App() {
-  const { user, isAuthenticated } = useSelector((state) => state.auth || {});
+  const { user, isAuthenticated, isChecking } = useSelector((state) => state.auth || {});
 
   const dispatch = useDispatch();
 
@@ -35,7 +35,7 @@ function App() {
     <Router>
 
       
-      <CheckAuth isAuthenticated={isAuthenticated} user={user}>
+      <CheckAuth isAuthenticated={isAuthenticated} user={user} isChecking={isChecking}>
         <Routes>
 
           <Route path="/" element={<Navigate to="/user/home" replace />} /> 

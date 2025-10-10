@@ -162,6 +162,8 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.user = null; // ✅ store user data
         state.isAuthenticated = false;
+
+        console.log("Logout Successful. isAuthenticated:", state.isAuthenticated);
       });
   },
 });
