@@ -1,6 +1,33 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchSongs, addSong, deleteSong } from "../../app/adminSongsSlice";
+import { motion, AnimatePresence } from "framer-motion";
+
+const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15, // Delay between cards
+      },
+    },
+  };
+
+  const cardVariants = {
+    hidden: { opacity: 0, x: -100 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: {
+        type: "spring",
+        stiffness: 15,
+        damping: 15,
+       
+      },
+    },
+  };
+  
+
 
 const AdminSongsList = () => {
   const dispatch = useDispatch();
@@ -47,11 +74,19 @@ const AdminSongsList = () => {
         {error && <p className="mt-6 text-center text-red-500">{error}</p>}
 
         {/* Song Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6 mt-6">
+        {/* <AnimatePresence mode="wait"> */}
+        <motion.div
+          key={Math.random()}
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6 mt-6"
+        >
           {Array.isArray(songs) &&
             songs.map(({ _id, title, artist, album, imageUrl, audioUrl }) => (
-              <div
+              <motion.div
                 key={_id}
+                variants={cardVariants}
                 className="bg-gray-800 rounded-xl p-4 shadow-md flex flex-col hover:scale-105 transition-transform duration-200"
               >
                 <img
@@ -74,9 +109,10 @@ const AdminSongsList = () => {
                 >
                   Delete
                 </button>
-              </div>
+              </motion.div>
             ))}
-        </div>
+        </motion.div>
+        {/* </AnimatePresence> */}
       </div>
 
       {/* Floating Add Button */}

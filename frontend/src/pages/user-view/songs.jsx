@@ -1,7 +1,31 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchSongs } from "../../app/adminSongsSlice";
+import { motion, AnimatePresence } from "framer-motion";
 
+const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15, // Delay between cards
+      },
+    },
+  };
+
+  const cardVariants = {
+    hidden: { opacity: 0, x: -100 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: {
+        type: "spring",
+        stiffness: 15,
+        damping: 15,
+       
+      },
+    },
+  };
 const UserSongsList = () => {
   const dispatch = useDispatch();
   const { songs, loading, error } = useSelector((state) => state.admin);
@@ -25,11 +49,19 @@ const UserSongsList = () => {
       )}
 
       {/* Song Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      <AnimatePresence mode="wait">
+      <motion.div
+        key={Math.random()}
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+      >
         {Array.isArray(songs) &&
           songs.map(({ _id, title, artist, album, imageUrl, audioUrl }) => (
-            <div
+            <motion.div
               key={_id}
+              variants={cardVariants}
               className="bg-gray-800 rounded-xl p-4 shadow-md flex flex-col hover:scale-105 hover:shadow-lg transition-transform duration-200 h-[360px]"
             >
               <img
@@ -42,16 +74,17 @@ const UserSongsList = () => {
               />
               <h3 className="text-lg font-semibold truncate">{title}</h3>
               <p className="text-gray-400 text-sm mb-3 truncate">
-                {artist} {album && `- ${album}`}
+                {artist} {album && ` - ${album}`}
               </p>
               <audio
                 controls
                 src={audioUrl}
                 className="mt-auto w-full rounded-lg"
               />
-            </div>
+            </motion.div>
           ))}
-      </div>
+      </motion.div>
+      </AnimatePresence>
     </div>
   );
 };

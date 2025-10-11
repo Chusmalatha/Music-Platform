@@ -3,6 +3,10 @@ import { Music, Search, Menu, X, LogOut} from "lucide-react";
 import { logoutUser } from "../../app/authSlice";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { motion} from "framer-motion"
+
+
+
 const AdminHeader = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -21,7 +25,13 @@ const AdminHeader = () => {
     <header className="fixed top-0 left-0 w-full bg-black text-white flex items-center justify-between px-4 sm:px-6 py-3 z-50 shadow-md h-16">
       {/* Left side logo */}
       <div className="flex items-center gap-3">
-        <Music className="text-blue-500" />
+        <motion.div
+                  initial={{ scale: 0 }}
+                  animate={{ scale: [0.75,1,0.75]}}
+                  transition={{ duration: 1.5, delay: 0.5, repeat: Infinity, repeatType: "loop" }}
+                >
+                <Music className="text-blue-500 w-6 h-6 sm:w-7 sm:h-7" />
+                </motion.div>
         <div className="font-bold text-lg sm:text-xl tracking-wide select-none cursor-default">
           MusicApp
         </div>
@@ -41,7 +51,10 @@ const AdminHeader = () => {
       {/* Right side */}
       <div className="flex items-center gap-3">
   {/* Desktop Logout */}
-  <button 
+  <motion.button 
+  initial={{x:20}}
+    animate={{x:0}}
+    transition={{duration:0.5, delay:0.5, type:'spring', stiffness:'120'}}
     
     className="hidden sm:flex items-center gap-2 bg-blue-700 text-white font-bold px-3 sm:px-4 py-2 rounded hover:bg-blue-600 transition text-sm sm:text-base"
     onClick={() => {
@@ -50,7 +63,7 @@ const AdminHeader = () => {
   >
     <LogOut className="h-4 w-4" aria-hidden="true" />
     Logout
-  </button>
+  </motion.button>
 
 
         {/* Mobile menu toggle */}

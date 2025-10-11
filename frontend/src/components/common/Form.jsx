@@ -1,7 +1,13 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 
 const Form = ({ fields, onSubmit, buttonText, errorMessage }) => {
   return (
+    <motion.div
+      initial={{ y: -20 }}
+      animate={{ y:0}}
+      transition={{duration:0.5}}
+    >
     <form
       onSubmit={onSubmit}
       className="bg-black p-6 sm:p-8 rounded-lg shadow-md w-full max-w-sm sm:max-w-md mx-auto"
@@ -43,6 +49,7 @@ const Form = ({ fields, onSubmit, buttonText, errorMessage }) => {
         {buttonText}
       </button>
     </form>
+    </motion.div>
   );
 };
 
