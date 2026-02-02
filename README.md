@@ -22,16 +22,16 @@
 _Here are some screenshots of the app:_  
 
 **Regiter Page:**  
-![Mobile View](assets.register page.png)
+![Mobile View](assets/register%20page.png)
 
 **Home Page / Song List:**  
-![Home Page](assets/home page.png)
+![Home Page](assets/home%20page.png)
 
 **Song Player View:**  
-![Player](assets/songs page.png)
+![Player](assets/songs%20page.png)
 
 **Responsive Mobile View:**  
-![Mobile View](assets/mobile.png)
+![Mobile View](assets/responsive%20.png)
 
 1. Clone the repository:  
    ```bash
