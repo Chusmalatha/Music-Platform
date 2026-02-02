@@ -31,7 +31,7 @@ _Here are some screenshots of the app:_
 ![Player](assets/songs%20page.png)
 
 **Responsive Mobile View:**  
-![Mobile View](assets/responsive%20.png)
+![Mobile View](assets/responsive%20page.png)
 
 1. Clone the repository:  
    ```bash
