@@ -21,16 +21,18 @@
 ## 🖼️ Screenshots
 _Here are some screenshots of the app:_  
 
+**Regiter Page:**  
+![Mobile View](assets.register page.png)
+
 **Home Page / Song List:**  
-![Home Page](link-to-your-screenshot1)  
+![Home Page](assets/home page.png)
 
 **Song Player View:**  
-![Player](link-to-your-screenshot2)  
+![Player](assets/songs page.png)
 
 **Responsive Mobile View:**  
-![Mobile View](link-to-your-screenshot3)  
+![Mobile View](assets/mobile.png)
 
-## 💡 How to Run Locally
 1. Clone the repository:  
    ```bash
    git clone https://github.com/your-username/music-platform.git
